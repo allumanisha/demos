@@ -1,0 +1,33 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubedemo-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: Kubdemo
+  template:
+    metadata:
+      labels:
+        app: Kubdemo
+    spec:
+      containers:
+      - name: dockersamplerepos
+        image: samplescrs.azurecr.io/dockersamplerepos:latest
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+      - name: dsconsgsn
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubedemo
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: Kubedemo
